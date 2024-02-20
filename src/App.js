@@ -6,11 +6,19 @@ import { Route, Routes, Link, useNavigate, Outlet } from 'react-router-dom';
 import Detail from './routes/Detail.js';
 import Cart from './routes/Cart.js';
 import axios from 'axios';
+import { useQuery } from 'react-query';
 
 function App() {
 
   let [members, setMembers] = useState(data);
   let navigate = useNavigate();
+
+  let result = useQuery(['loginUser'], () => {
+    return axios.get('https://codingapple1.github.io/userdata.json')
+      .then((a) => {
+        return a.data;
+      })
+  })
 
   return (
     <div className="App">
@@ -21,6 +29,7 @@ function App() {
             <Nav.Link onClick={() => { navigate('/') }}>Home</Nav.Link>
             <Nav.Link onClick={() => { navigate('/detail') }}>Detail</Nav.Link>
           </Nav>
+          <Nav className='ms-auto'>반가워요 Bocchi</Nav>
         </Container>
       </Navbar>
       <Routes>
@@ -65,7 +74,7 @@ function App() {
 
         <Route path='/detail/:id' element={<Detail members={members} />} />
 
-        <Route path = '/cart' element = {<Cart></Cart>}></Route>
+        <Route path='/cart' element={<Cart></Cart>}></Route>
 
       </Routes>
     </div>
